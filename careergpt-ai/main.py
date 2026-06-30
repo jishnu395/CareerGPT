@@ -1,7 +1,3 @@
-
-
-
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
@@ -17,7 +13,7 @@ load_dotenv()
 # Configure Gemini
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Create model
+# Gemini model
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # FastAPI app
@@ -27,7 +23,6 @@ app = FastAPI(
 )
 
 
-# Request DTO
 class ChatRequest(BaseModel):
     messages: List[Dict[str, str]]
     questionCount: int
@@ -43,7 +38,7 @@ def home():
 @app.post("/chat")
 def chat(request: ChatRequest):
     try:
-        # Build conversation prompt
+
         conversation = SYSTEM_PROMPT + "\n\nConversation:\n"
 
         for message in request.messages:
@@ -51,9 +46,23 @@ def chat(request: ChatRequest):
             content = message.get("content", "")
             conversation += f"{role}: {content}\n"
 
-        conversation += (
-            f"\nThe student has answered {request.questionCount} questions."
-        )
+        conversation += f"""
+
+SYSTEM INSTRUCTION:
+
+The student has already answered {request.questionCount} questions.
+
+If the student has answered fewer than 10 questions:
+- Ask exactly ONE question.
+- Do NOT generate the report.
+
+If the student has answered 10 or more questions:
+- Return ONLY valid JSON.
+- Do NOT ask another question.
+- Do NOT wrap the JSON inside markdown.
+- Do NOT include ```json.
+- Do NOT include explanations.
+"""
 
         response = model.generate_content(conversation)
 
@@ -62,6 +71,7 @@ def chat(request: ChatRequest):
         }
 
     except Exception as e:
+        print(e)
         return {
             "error": str(e)
         }
