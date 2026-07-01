@@ -73,9 +73,7 @@ public class AiService {
                     request,
                     Map.class
             );
-            System.out.println("DEBUG - Python response: " + response);
         } catch (Exception e) {
-            System.out.println("DEBUG - Exception calling Python: " + e.getMessage());
             throw new RuntimeException("AI service call failed: " + e.getMessage());
         }
 
