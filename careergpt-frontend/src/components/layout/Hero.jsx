@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 
-import HeroContent from "./HeroContent";
-import HeroVisual from "./HeroVisual";
+import HeroContent from "../landing/HeroContent";
+import HeroVisual from "../landing/HeroVisual";
 
 export default function Hero() {
   return (
