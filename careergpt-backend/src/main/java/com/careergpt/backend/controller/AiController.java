@@ -16,15 +16,21 @@ public class AiController {
     private AiService aiService;
 
     @PostMapping("/answer")
-    public ResponseEntity<Map<String, String>> answer(@RequestBody MessageRequest request) {
+    public ResponseEntity<Map<String, Object>> answer(@RequestBody MessageRequest request) {
 
         String aiReply = aiService.processAnswer(
                 request.getSessionId(),
                 request.getContent()
         );
 
+        boolean completed = aiReply.trim().startsWith("{")
+                || aiReply.trim().startsWith("```json");
+
         return ResponseEntity.ok(
-                Map.of("reply", aiReply)
+                Map.of(
+                        "reply", aiReply,
+                        "completed", completed
+                )
         );
     }
 }

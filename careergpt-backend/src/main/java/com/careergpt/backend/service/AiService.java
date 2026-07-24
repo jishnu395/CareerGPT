@@ -7,6 +7,7 @@ import com.careergpt.backend.repository.MessageRepository;
 import com.careergpt.backend.repository.ReportRepository;
 import com.careergpt.backend.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,6 +27,9 @@ public class AiService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Value("${AI_SERVICE_URL}")
+    private String aiServiceUrl;
 
     public String processAnswer(Long sessionId, String userMessage) {
 
@@ -67,9 +71,10 @@ public class AiService {
 
         // Call Python AI service
         Map<String, String> response;
+
         try {
             response = restTemplate.postForObject(
-                    "http://localhost:8000/chat",
+                    aiServiceUrl + "/chat",
                     request,
                     Map.class
             );
@@ -94,15 +99,19 @@ public class AiService {
 
         // Save report if AI returned JSON
         String cleanedReply = aiReply.trim();
+
         if (cleanedReply.startsWith("```json")) {
             cleanedReply = cleanedReply.substring(7);
         }
+
         if (cleanedReply.startsWith("```")) {
             cleanedReply = cleanedReply.substring(3);
         }
+
         if (cleanedReply.endsWith("```")) {
             cleanedReply = cleanedReply.substring(0, cleanedReply.length() - 3);
         }
+
         cleanedReply = cleanedReply.trim();
 
         if (cleanedReply.startsWith("{")) {
@@ -110,6 +119,7 @@ public class AiService {
                     .session(session)
                     .reportJson(cleanedReply)
                     .build();
+
             reportRepository.save(report);
         }
 
