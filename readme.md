@@ -1,218 +1,221 @@
-# 🎓 CareerGPT - AI Powered Career Guidance Platform
+# 🚀 CareerGPT – AI Career Intelligence Platform
 
-CareerGPT is an AI-powered career guidance platform that helps students discover suitable career paths through an adaptive conversation. It uses a **Spring Boot backend**, a **Python FastAPI AI microservice**, **Google Gemini AI**, and **PostgreSQL** to generate personalized career reports.
-
----
-
-## 🚀 Features
-
-- 🔐 JWT Authentication (Register & Login)
-- 👤 Student Session Management
-- 💬 Adaptive AI Conversation
-- 🤖 AI-powered Career Guidance using Google Gemini
-- 📊 Personalized Career Report Generation
-- 💾 Persistent Storage using PostgreSQL
-- 🌐 REST APIs built with Spring Boot
-- ⚡ FastAPI AI Microservice
-- 📄 JSON-based Report Retrieval
+CareerGPT is a full-stack AI-powered career guidance platform that conducts an adaptive conversation with students, understands their interests, skills, goals, and academic background, and generates a personalized career roadmap using Generative AI.
 
 ---
 
-# 🏗️ System Architecture
+## 📌 Features
 
-```text
-                +----------------------+
-                |      Client          |
-                | (Postman / React UI) |
-                +----------+-----------+
-                           |
-                           |
-                           ▼
-               Spring Boot Backend
-        (Authentication + Business Logic)
-                           |
-             REST API (RestTemplate)
-                           |
-                           ▼
-               Python FastAPI Service
-                   (Prompt Builder)
-                           |
-                           ▼
-                  Google Gemini API
-                           |
-                           ▼
-                  AI Career Guidance
-                           |
-                           ▼
-                    PostgreSQL Database
+- 🔐 Secure JWT Authentication
+- 👤 Student Registration & Login
+- 💬 AI-powered adaptive career assessment
+- 🧠 Dynamic conversation using FastAPI + OpenAI
+- 📊 Personalized Career Report
+- 🎯 Career Recommendations
+- 📚 Recommended Courses
+- 🛠 Skills Gap Analysis
+- 🗺 Career Roadmap
+- 🏛 Suggested Colleges
+- 📄 Downloadable Report
+- 🎨 Modern Responsive UI built with React + Material UI
+
+---
+
+# 🏗 Architecture
+
+```
+                React (Vite)
+                      │
+                  REST APIs
+                      │
+             Spring Boot Backend
+         (Authentication + Business Logic)
+             │                   │
+             │                   │
+      PostgreSQL            FastAPI AI Service
+                                  │
+                             OpenAI GPT API
 ```
 
 ---
 
-# 🛠️ Tech Stack
+# 🛠 Tech Stack
+
+## Frontend
+
+- React (Vite)
+- Material UI
+- Axios
+- React Router
 
 ## Backend
 
-- Java 22
 - Spring Boot
 - Spring Security
-- Spring Data JPA
 - JWT Authentication
-- Maven
+- Spring Data JPA
+- Hibernate
 
-## AI Microservice
+## AI Service
 
-- Python
 - FastAPI
-- Google Gemini API
-- Prompt Engineering
+- OpenAI API
+- Python
 
 ## Database
 
 - PostgreSQL
-
-## Tools
-
-- IntelliJ IDEA
-- VS Code
-- Postman
-- Git & GitHub
 
 ---
 
 # 📂 Project Structure
 
 ```
-CareerGPT
+CareerGPT/
+
+├── careergpt-frontend
+│      ├── src
+│      ├── components
+│      ├── pages
+│      ├── services
+│      └── theme
 │
 ├── careergpt-backend
-│   ├── config
-│   ├── controller
-│   ├── dto
-│   ├── model
-│   ├── repository
-│   ├── security
-│   ├── service
-│   └── ...
+│      ├── controller
+│      ├── service
+│      ├── repository
+│      ├── model
+│      ├── dto
+│      ├── security
+│      └── config
 │
-├── careergpt-ai
-│   ├── main.py
-│   ├── prompts.py
-│   ├── requirements.txt
-│   └── .env
-│
-└── README.md
+└── careergpt-ai
+       ├── main.py
+       ├── prompts.py
+       └── requirements.txt
 ```
 
 ---
 
-# 🔄 Workflow
+# ⚙️ How It Works
 
-1. Student registers and logs in.
-2. JWT token is generated.
-3. Student starts a career guidance session.
-4. Spring Boot stores conversation history.
-5. Spring Boot sends conversation to FastAPI.
-6. FastAPI calls Google Gemini.
-7. Gemini asks adaptive questions.
-8. After 10 answers, Gemini generates a personalized career report.
-9. Spring Boot stores the report in PostgreSQL.
-10. Report can be retrieved anytime using the Report API.
+### Step 1
 
----
+Student registers and logs in.
 
-# 📡 REST API Endpoints
+↓
 
-## Authentication
+### Step 2
 
-### Register
+Backend creates a new assessment session.
 
-```
-POST /api/auth/register
-```
+↓
 
-### Login
+### Step 3
 
-```
-POST /api/auth/login
-```
+Student answers AI-generated questions.
 
----
+↓
 
-## Session
+### Step 4
 
-### Start Session
+Spring Boot stores every conversation.
 
-```
-POST /api/session/start
-```
+↓
 
----
+### Step 5
 
-## AI
+Conversation history is sent to the FastAPI AI service.
 
-### Send Student Answer
+↓
 
-```
-POST /api/ai/answer
-```
+### Step 6
 
----
+OpenAI analyzes the responses.
 
-## Report
+↓
 
-### Get Career Report
+### Step 7
 
-```
-GET /api/report/{sessionId}
-```
+AI generates a structured JSON career report.
+
+↓
+
+### Step 8
+
+Backend stores the report in PostgreSQL.
+
+↓
+
+### Step 9
+
+Frontend displays the personalized career report.
 
 ---
 
-# 📋 Sample Career Report
+# 📊 Generated Report Includes
 
-The AI generates a personalized report containing:
-
-- Summary
+- Career Summary
 - Top Career Recommendations
-- Why Those Careers
+- Why These Careers
 - Recommended Courses
 - Skills to Develop
-- Relevant Exams
-- Recommended Colleges
-- Career Roadmap
-- Immediate Next Step
-- Motivation & Encouragement
+- Suggested Colleges
+- Roadmap
+- Immediate Next Steps
+- Personalized Encouragement
 
 ---
 
-# ⚙️ Setup Instructions
+# 🔐 Authentication
+
+CareerGPT uses JWT Authentication.
+
+Workflow:
+
+```
+Register
+    ↓
+Generate JWT
+    ↓
+Login
+    ↓
+Receive Token
+    ↓
+Token stored in Local Storage
+    ↓
+Authenticated API Requests
+```
+
+---
+
+# 🚀 Running Locally
 
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/jishnu395/CareerGPT.git
+git clone https://github.com/<your-username>/CareerGPT.git
 ```
 
 ---
 
-## 2. Configure PostgreSQL
+## 2. Backend
 
-Create a PostgreSQL database and update the Spring Boot configuration.
+```bash
+cd careergpt-backend
+
+mvn spring-boot:run
+```
+
+Runs on:
+
+```
+http://localhost:8080
+```
 
 ---
 
-## 3. Configure Gemini API
-
-Create a `.env` file inside the `careergpt-ai` folder.
-
-```
-GEMINI_API_KEY=YOUR_API_KEY
-```
-
----
-
-## 4. Start Python AI Service
+## 3. AI Service
 
 ```bash
 cd careergpt-ai
@@ -222,24 +225,74 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
+Runs on:
+
+```
+http://localhost:8000
+```
+
 ---
 
-## 5. Start Spring Boot
+## 4. Frontend
 
-Run the Spring Boot application from IntelliJ IDEA.
+```bash
+cd careergpt-frontend
+
+npm install
+
+npm run dev
+```
+
+Runs on:
+
+```
+http://localhost:5173
+```
 
 ---
 
-## 🎯 Future Improvements
+# 📸 Screenshots
 
-- React Frontend
-- Chat UI
-- PDF Career Report Export
+> Add screenshots after deployment.
+
+- Landing Page
+- Student Registration
+- AI Assessment
+- Processing Screen
+- Career Report
+
+---
+
+# 🌟 Future Enhancements
+
+- PDF Report Export
+- Email Career Report
 - Resume Analysis
-- Career Dashboard
-- Deployment on Railway/Render
-- Docker Support
+- ATS Resume Score
+- LinkedIn Profile Analysis
+- Personality Assessment
+- Career Matching using Embeddings
+- Voice-based Assessment
+- Multi-language Support
 - Admin Dashboard
+- Analytics
+
+---
+
+# 📚 Learning Outcomes
+
+This project demonstrates knowledge of:
+
+- Full Stack Development
+- Spring Boot REST APIs
+- JWT Authentication
+- React State Management
+- FastAPI
+- OpenAI Integration
+- PostgreSQL
+- REST Communication
+- AI Prompt Engineering
+- Full Project Deployment
 
 ---
 
@@ -247,9 +300,23 @@ Run the Spring Boot application from IntelliJ IDEA.
 
 **Jishnu V**
 
-- GitHub: https://github.com/jishnu395
-- LinkedIn: https://www.linkedin.com/in/jishnu-v-3119462a4/
+Computer Science Engineering Student
+
+Interested in:
+
+- Artificial Intelligence
+- Machine Learning
+- Generative AI
+- Full Stack Development
+
+GitHub:
+https://github.com/jishnu395
+
+LinkedIn:
+https://www.linkedin.com/in/jishnu-v-3119462a4/
 
 ---
 
-# ⭐ If you found this project useful, consider giving it a Star!
+# ⭐ If you like this project
+
+Give the repository a ⭐ on GitHub.
