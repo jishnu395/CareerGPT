@@ -1,6 +1,4 @@
-// src/pages/Assessment/Assessment.jsx
-
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -10,6 +8,8 @@ import {
   TextField,
   Stack,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import PrimaryButton from "../../components/common/PrimaryButton";
@@ -29,20 +29,32 @@ export default function Assessment() {
 
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleSend = async () => {
-    if (!answer.trim()) return;
+    if (!answer.trim() || loading) return;
+
+    const currentAnswer = answer;
 
     const userMessage = {
       role: "user",
-      content: answer,
+      content: currentAnswer,
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    setAnswer("");
     setLoading(true);
 
     try {
-      const res = await sendAnswer(sessionId, answer);
+      const res = await sendAnswer(sessionId, currentAnswer);
 
       const aiMessage = {
         role: "ai",
@@ -51,14 +63,12 @@ export default function Assessment() {
 
       setMessages((prev) => [...prev, aiMessage]);
 
-      setAnswer("");
-
       if (res.completed) {
         navigate("/processing");
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to communicate with AI.");
+      setOpenSnackbar(true);
     } finally {
       setLoading(false);
     }
@@ -90,11 +100,13 @@ export default function Assessment() {
         </Typography>
 
         <Stack
+          ref={chatRef}
           spacing={2}
           sx={{
             height: "55vh",
             overflowY: "auto",
             mb: 3,
+            pr: 1,
           }}
         >
           {messages.map((msg, index) => (
@@ -112,11 +124,30 @@ export default function Assessment() {
                     ? "#1976d2"
                     : "#1E293B",
                 color: "#fff",
+                borderRadius: 3,
               }}
             >
-              <Typography>{msg.content}</Typography>
+              <Typography whiteSpace="pre-wrap">
+                {msg.content}
+              </Typography>
             </Paper>
           ))}
+
+          {loading && (
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: "#1E293B",
+                color: "white",
+                width: "fit-content",
+              }}
+            >
+              <Stack direction="row" spacing={2} alignItems="center">
+                <CircularProgress size={18} color="inherit" />
+                <Typography>CareerGPT is thinking...</Typography>
+              </Stack>
+            </Paper>
+          )}
         </Stack>
 
         <TextField
@@ -125,11 +156,21 @@ export default function Assessment() {
           fullWidth
           placeholder="Type your answer..."
           value={answer}
+          disabled={loading}
           onChange={(e) => setAnswer(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
         />
 
         <Box mt={3}>
-          <PrimaryButton onClick={handleSend} disabled={loading}>
+          <PrimaryButton
+            onClick={handleSend}
+            disabled={loading || !answer.trim()}
+          >
             {loading ? (
               <CircularProgress size={22} color="inherit" />
             ) : (
@@ -138,6 +179,20 @@ export default function Assessment() {
           </PrimaryButton>
         </Box>
       </Paper>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert
+          severity="error"
+          variant="filled"
+          onClose={() => setOpenSnackbar(false)}
+        >
+          Failed to communicate with AI. Please try again.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
