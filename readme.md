@@ -1,66 +1,141 @@
-# 🚀 CareerGPT – AI Career Intelligence Platform
+<div align="center">
 
-CareerGPT is a full-stack AI-powered career guidance platform that conducts an adaptive conversation with students, understands their interests, skills, goals, and academic background, and generates a personalized career roadmap using Generative AI.
+# 🚀 CareerGPT
+### AI-Powered Career Intelligence Platform
 
----
+<img src="https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk"/>
+<img src="https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?style=for-the-badge&logo=springboot"/>
+<img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react"/>
+<img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi"/>
+<img src="https://img.shields.io/badge/Gemini-AI-blue?style=for-the-badge&logo=google"/>
+<img src="https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql"/>
 
-## 📌 Features
+### **Empowering students with AI-driven career guidance, personalized roadmaps, and professional development insights.**
 
-- 🔐 Secure JWT Authentication
-- 👤 Student Registration & Login
-- 💬 AI-powered adaptive career assessment
-- 🧠 Dynamic conversation using FastAPI + OpenAI
-- 📊 Personalized Career Report
-- 🎯 Career Recommendations
-- 📚 Recommended Courses
-- 🛠 Skills Gap Analysis
-- 🗺 Career Roadmap
-- 🏛 Suggested Colleges
-- 📄 Downloadable Report
-- 🎨 Modern Responsive UI built with React + Material UI
+</div>
 
 ---
 
-# 🏗 Architecture
+# 📖 Overview
 
+CareerGPT is an AI-powered Career Intelligence Platform designed to help students discover suitable career paths based on their skills, interests, strengths, and aspirations.
+
+Instead of generic career recommendations, CareerGPT conducts an intelligent AI conversation, understands the student's profile, and generates a comprehensive personalized career report.
+
+The application combines:
+
+- 🤖 Generative AI (Google Gemini)
+- ☕ Spring Boot REST APIs
+- ⚛️ React Frontend
+- ⚡ FastAPI AI Microservice
+- 🐘 PostgreSQL Database
+
+to deliver an end-to-end career guidance experience.
+
+---
+
+# ✨ Features
+
+## 👨‍🎓 Student Assessment
+
+- Student profile registration
+- AI-powered career interview
+- Dynamic question generation
+- Session-based assessment
+- Personalized interaction
+
+---
+
+## 🤖 AI Intelligence
+
+- Powered by Google Gemini
+- Context-aware conversations
+- Multi-turn assessment
+- Career analysis
+- Skill extraction
+- Learning recommendation
+- Career path prediction
+
+---
+
+## 📄 Personalized Career Report
+
+CareerGPT generates a professional report including:
+
+- Candidate Snapshot
+- Executive Summary
+- Top Career Matches
+- Technical Skills
+- Professional Skills
+- Recommended Courses
+- Certifications
+- Career Roadmap
+- Colleges
+- Competitive Exams
+- Immediate Action Plan
+- Long-Term Growth Strategy
+
+---
+
+## 📊 Interactive Dashboard
+
+- Beautiful Material UI
+- Modern responsive design
+- Smooth workflow
+- PDF report generation
+- Mobile-friendly interface
+
+---
+
+# 🏗️ System Architecture
+
+```text
+                React + Vite
+                     │
+                     ▼
+            Spring Boot Backend
+                     │
+                     ▼
+            FastAPI AI Service
+                     │
+                     ▼
+          Google Gemini API
+                     │
+                     ▼
+               PostgreSQL
 ```
-                React (Vite)
-                      │
-                  REST APIs
-                      │
-             Spring Boot Backend
-         (Authentication + Business Logic)
-             │                   │
-             │                   │
-      PostgreSQL            FastAPI AI Service
-                                  │
-                             OpenAI GPT API
-```
 
 ---
 
-# 🛠 Tech Stack
+# 🛠️ Tech Stack
 
 ## Frontend
 
-- React (Vite)
+- React
+- Vite
 - Material UI
 - Axios
 - React Router
 
+---
+
 ## Backend
 
+- Java 21
 - Spring Boot
-- Spring Security
-- JWT Authentication
 - Spring Data JPA
-- Hibernate
+- PostgreSQL
+- Maven
+
+---
 
 ## AI Service
 
-- FastAPI
-- OpenAI API
 - Python
+- FastAPI
+- Google Gemini API
+
+---
 
 ## Database
 
@@ -70,15 +145,14 @@ CareerGPT is a full-stack AI-powered career guidance platform that conducts an a
 
 # 📂 Project Structure
 
-```
-CareerGPT/
-
+```text
+CareerGPT
+│
 ├── careergpt-frontend
-│      ├── src
-│      ├── components
 │      ├── pages
+│      ├── components
 │      ├── services
-│      └── theme
+│      └── assets
 │
 ├── careergpt-backend
 │      ├── controller
@@ -86,128 +160,74 @@ CareerGPT/
 │      ├── repository
 │      ├── model
 │      ├── dto
-│      ├── security
 │      └── config
 │
-└── careergpt-ai
-       ├── main.py
-       ├── prompts.py
-       └── requirements.txt
+├── careergpt-ai
+│      ├── main.py
+│      ├── prompts.py
+│      └── requirements.txt
+│
+└── README.md
 ```
 
 ---
 
-# ⚙️ How It Works
+# ⚙️ Workflow
 
-### Step 1
-
-Student registers and logs in.
-
-↓
-
-### Step 2
-
-Backend creates a new assessment session.
-
-↓
-
-### Step 3
-
-Student answers AI-generated questions.
-
-↓
-
-### Step 4
-
-Spring Boot stores every conversation.
-
-↓
-
-### Step 5
-
-Conversation history is sent to the FastAPI AI service.
-
-↓
-
-### Step 6
-
-OpenAI analyzes the responses.
-
-↓
-
-### Step 7
-
-AI generates a structured JSON career report.
-
-↓
-
-### Step 8
-
-Backend stores the report in PostgreSQL.
-
-↓
-
-### Step 9
-
-Frontend displays the personalized career report.
-
----
-
-# 📊 Generated Report Includes
-
-- Career Summary
-- Top Career Recommendations
-- Why These Careers
-- Recommended Courses
-- Skills to Develop
-- Suggested Colleges
-- Roadmap
-- Immediate Next Steps
-- Personalized Encouragement
-
----
-
-# 🔐 Authentication
-
-CareerGPT uses JWT Authentication.
-
-Workflow:
-
-```
-Register
-    ↓
-Generate JWT
-    ↓
-Login
-    ↓
-Receive Token
-    ↓
-Token stored in Local Storage
-    ↓
-Authenticated API Requests
+```text
+Student Details
+        │
+        ▼
+AI Assessment
+        │
+        ▼
+Conversation Analysis
+        │
+        ▼
+Career Intelligence
+        │
+        ▼
+Personalized Report
+        │
+        ▼
+Download PDF
 ```
 
 ---
 
-# 🚀 Running Locally
+# 🚀 Getting Started
 
-## 1. Clone Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/<your-username>/CareerGPT.git
 ```
 
+```bash
+cd CareerGPT
+```
+
 ---
 
-## 2. Backend
+# Backend Setup
 
 ```bash
 cd careergpt-backend
+```
 
+Configure PostgreSQL in
+
+```properties
+application.properties
+```
+
+Run
+
+```bash
 mvn spring-boot:run
 ```
 
-Runs on:
+Runs on
 
 ```
 http://localhost:8080
@@ -215,17 +235,37 @@ http://localhost:8080
 
 ---
 
-## 3. AI Service
+# AI Service Setup
 
 ```bash
 cd careergpt-ai
+```
 
+Create
+
+```
+.env
+```
+
+Add
+
+```env
+GEMINI_API_KEY=YOUR_API_KEY
+```
+
+Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+Run
+
+```bash
 uvicorn main:app --reload --port 8000
 ```
 
-Runs on:
+Runs on
 
 ```
 http://localhost:8000
@@ -233,17 +273,25 @@ http://localhost:8000
 
 ---
 
-## 4. Frontend
+# Frontend Setup
 
 ```bash
 cd careergpt-frontend
+```
 
+Install packages
+
+```bash
 npm install
+```
 
+Run
+
+```bash
 npm run dev
 ```
 
-Runs on:
+Runs on
 
 ```
 http://localhost:5173
@@ -251,72 +299,193 @@ http://localhost:5173
 
 ---
 
-# 📸 Screenshots
+# Environment Variables
 
-> Add screenshots after deployment.
+## Backend
 
-- Landing Page
-- Student Registration
-- AI Assessment
-- Processing Screen
-- Career Report
+```properties
+SPRING_DATASOURCE_URL=
+SPRING_DATASOURCE_USERNAME=
+SPRING_DATASOURCE_PASSWORD=
+AI_SERVICE_URL=http://localhost:8000
+```
 
 ---
 
-# 🌟 Future Enhancements
+## AI Service
 
-- PDF Report Export
-- Email Career Report
+```env
+GEMINI_API_KEY=
+```
+
+---
+
+# REST APIs
+
+## Student
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/student` |
+| GET | `/api/student/{id}` |
+
+---
+
+## Session
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/session/start/{studentId}` |
+
+---
+
+## AI
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/ai/answer` |
+
+---
+
+## Report
+
+| Method | Endpoint |
+|---------|----------|
+| GET | `/api/report/{sessionId}` |
+
+---
+
+# AI Assessment Flow
+
+```text
+Student Registration
+          │
+          ▼
+Create Session
+          │
+          ▼
+AI asks Questions
+          │
+          ▼
+Student Answers
+          │
+          ▼
+Conversation Analysis
+          │
+          ▼
+Generate Career Report
+          │
+          ▼
+Store Report
+          │
+          ▼
+Generate PDF
+```
+
+---
+
+# Future Enhancements
+
 - Resume Analysis
-- ATS Resume Score
-- LinkedIn Profile Analysis
-- Personality Assessment
-- Career Matching using Embeddings
-- Voice-based Assessment
+- ATS Resume Scoring
+- Resume Builder
+- Interview Preparation
+- Mock Interviews
+- Company Recommendations
+- Job Matching
+- Skill Gap Analysis
+- Learning Tracker
+- AI Voice Interview
 - Multi-language Support
+- Authentication & User Accounts
 - Admin Dashboard
-- Analytics
+- Cloud Deployment
 
 ---
 
-# 📚 Learning Outcomes
+# Screenshots
 
-This project demonstrates knowledge of:
+> Add screenshots here
 
-- Full Stack Development
-- Spring Boot REST APIs
-- JWT Authentication
-- React State Management
-- FastAPI
-- OpenAI Integration
-- PostgreSQL
-- REST Communication
-- AI Prompt Engineering
-- Full Project Deployment
+```
+Landing Page
 
----
+Student Details
 
-# 👨‍💻 Author
+Assessment
 
-**Jishnu V**
+Processing
 
-Computer Science Engineering Student
+Career Report
 
-Interested in:
-
-- Artificial Intelligence
-- Machine Learning
-- Generative AI
-- Full Stack Development
-
-GitHub:
-https://github.com/jishnu395
-
-LinkedIn:
-https://www.linkedin.com/in/jishnu-v-3119462a4/
+Generated PDF
+```
 
 ---
 
-# ⭐ If you like this project
+# Deployment
 
-Give the repository a ⭐ on GitHub.
+| Service | Platform |
+|----------|----------|
+| Frontend | Vercel |
+| Backend | Render |
+| AI Service | Render |
+| Database | Neon PostgreSQL |
+
+---
+
+# Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+
+2. Create a feature branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit changes
+
+```bash
+git commit -m "Add feature"
+```
+
+4. Push
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# License
+
+This project is licensed under the MIT License.
+
+---
+
+# Author
+
+## **Jishnu V**
+
+**Computer Science Engineering**
+
+Sir M Visvesvaraya Institute of Technology
+
+GitHub: https://github.com/jishnu395
+
+LinkedIn: https://linkedin.com/in/jishnu-v-3119462a4
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project helpful, consider giving it a star!
+
+**CareerGPT — Guiding Careers with the Power of AI.**
+
+</div>
