@@ -1,28 +1,33 @@
 package com.careergpt.backend.controller;
 
+import com.careergpt.backend.dto.StudentRequest;
 import com.careergpt.backend.dto.StudentResponse;
 import com.careergpt.backend.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/student")
+@RequiredArgsConstructor
 public class StudentController {
 
-    @Autowired
-    private StudentService studentService;
+    private final StudentService studentService;
 
-    @GetMapping("/profile")
-    public ResponseEntity<StudentResponse> getProfile(
-            @RequestHeader("Authorization") String authHeader) {
+    @GetMapping("/{studentId}")
+    public ResponseEntity<StudentResponse> getStudent(
+            @PathVariable Long studentId) {
 
-        String token = authHeader.substring(7);
+        StudentResponse response = studentService.getStudent(studentId);
 
-        StudentResponse response = studentService.getProfile(token);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<StudentResponse> createStudent(
+            @RequestBody StudentRequest request) {
+
+        StudentResponse response = studentService.createStudent(request);
 
         return ResponseEntity.ok(response);
     }

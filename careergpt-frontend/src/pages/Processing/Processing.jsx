@@ -16,7 +16,7 @@ export default function Processing() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const sessionId = localStorage.getItem("sessionId");
+    const sessionId = sessionStorage.getItem("sessionId");
 
     if (!sessionId) {
       alert("Session not found.");

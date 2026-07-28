@@ -18,7 +18,7 @@ import { sendAnswer } from "../../services/aiService";
 export default function Assessment() {
   const navigate = useNavigate();
 
-  const sessionId = localStorage.getItem("sessionId");
+  const sessionId = sessionStorage.getItem("sessionId");
 
   const [messages, setMessages] = useState([
     {

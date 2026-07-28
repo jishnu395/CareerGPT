@@ -1,92 +1,141 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+/* ---------------- GLOBAL ---------------- */
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+html {
+  scroll-behavior: smooth;
+}
 
-    <title>CareerGPT | AI-Powered Career Intelligence Platform</title>
+body {
+  font-family: "Inter", sans-serif;
+  background: #050816;
+  color: white;
+}
 
-    <meta
-      name="description"
-      content="CareerGPT is an AI-powered career guidance platform that conducts adaptive conversations and generates personalized career roadmaps, skill-gap analysis, learning recommendations, and career reports."
-    />
+/* ---------------- SCROLLBAR ---------------- */
 
-    <meta
-      name="keywords"
-      content="CareerGPT, AI Career Guidance, Career Intelligence, Artificial Intelligence, Spring Boot, React, FastAPI, Career Assessment, Career Roadmap, Skill Gap Analysis"
-    />
+::-webkit-scrollbar {
+  width: 8px;
+}
 
-    <meta
-      name="author"
-      content="Jishnu V"
-    />
+::-webkit-scrollbar-track {
+  background: #0b1020;
+}
 
-    <meta
-      name="theme-color"
-      content="#050816"
-    />
+::-webkit-scrollbar-thumb {
+  background: #6d5ef5;
+  border-radius: 999px;
+}
 
-    <!-- Open Graph -->
-    <meta
-      property="og:title"
-      content="CareerGPT | AI-Powered Career Intelligence Platform"
-    />
+::-webkit-scrollbar-thumb:hover {
+  background: #8879ff;
+}
 
-    <meta
-      property="og:description"
-      content="Discover the right career with AI-powered adaptive conversations and personalized career reports."
-    />
+/* ---------------- SELECTION ---------------- */
 
-    <meta
-      property="og:type"
-      content="website"
-    />
+::selection {
+  background: #6d5ef5;
+  color: white;
+}
 
-    <meta
-      property="og:image"
-      content="/favicon.svg"
-    />
+/* ---------------- PRINT ---------------- */
 
-    <!-- Twitter -->
-    <meta
-      name="twitter:card"
-      content="summary_large_image"
-    />
+@page {
+  size: A4;
+  margin: 15mm;
+}
 
-    <meta
-      name="twitter:title"
-      content="CareerGPT"
-    />
+@media print {
 
-    <meta
-      name="twitter:description"
-      content="AI-powered career intelligence platform for students and professionals."
-    />
+  html,
+  body {
+    background: white !important;
+    color: #111 !important;
+    font-family: "Inter", sans-serif;
+  }
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+  /* Hide buttons */
+  .no-print {
+    display: none !important;
+  }
 
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
+  /* Remove dark theme */
+  .MuiPaper-root {
+    background: white !important;
+    color: #111 !important;
+    border: 1px solid #d9d9d9 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-radius: 10px !important;
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+    page-break-inside: avoid;
+    break-inside: avoid;
 
-  <body>
-    <div id="root"></div>
+    margin-bottom: 18px !important;
+  }
 
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+  .MuiTypography-root {
+    color: #111 !important;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #111 !important;
+    font-weight: 700 !important;
+  }
+
+  p,
+  li,
+  span {
+    color: #222 !important;
+    line-height: 1.7 !important;
+  }
+
+  /* Chips */
+
+  .MuiChip-root {
+    background: white !important;
+    color: #111 !important;
+    border: 1px solid #777 !important;
+    box-shadow: none !important;
+  }
+
+  /* Lists */
+
+  .MuiList-root {
+    padding-top: 0 !important;
+  }
+
+  .MuiListItem-root {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Cards */
+
+  .MuiGrid-item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  img {
+    page-break-inside: avoid;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  /* Print colors */
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

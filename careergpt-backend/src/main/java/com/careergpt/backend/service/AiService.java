@@ -9,6 +9,7 @@ import com.careergpt.backend.repository.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -34,9 +35,9 @@ public class AiService {
     public String processAnswer(Long sessionId, String userMessage) {
 
         Session session = sessionRepository.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new RuntimeException("Session not found."));
 
-        // Save student's message
+        // Save user's answer
         Message user = Message.builder()
                 .session(session)
                 .role("user")
@@ -45,7 +46,7 @@ public class AiService {
 
         messageRepository.save(user);
 
-        // Fetch conversation history
+        // Retrieve conversation history
         List<Message> messages = messageRepository.findBySession(session);
 
         List<Map<String, String>> conversation = new ArrayList<>();
@@ -59,36 +60,69 @@ public class AiService {
 
             conversation.add(map);
 
-            if ("user".equals(message.getRole())) {
+            if ("user".equalsIgnoreCase(message.getRole())) {
                 questionCount++;
             }
         }
 
-        // Build request for Python service
+        // Build AI request
         Map<String, Object> request = new HashMap<>();
         request.put("messages", conversation);
         request.put("questionCount", questionCount);
 
-        // Call Python AI service
         Map<String, String> response;
 
         try {
+
             response = restTemplate.postForObject(
                     aiServiceUrl + "/chat",
                     request,
                     Map.class
             );
-        } catch (Exception e) {
-            throw new RuntimeException("AI service call failed: " + e.getMessage());
+
+        } catch (HttpStatusCodeException ex) {
+
+            String body = ex.getResponseBodyAsString();
+
+            if (body != null &&
+                    (body.toLowerCase().contains("quota")
+                            || body.contains("429")
+                            || body.toLowerCase().contains("resourceexhausted"))) {
+
+                throw new RuntimeException(
+                        "Gemini API quota exceeded. Please try again later."
+                );
+            }
+
+            throw new RuntimeException(
+                    "AI service returned HTTP "
+                            + ex.getStatusCode().value()
+                            + ": "
+                            + body
+            );
+
+        } catch (Exception ex) {
+
+            throw new RuntimeException(
+                    "Unable to connect to AI service: " + ex.getMessage()
+            );
         }
 
-        if (response == null || !response.containsKey("reply")) {
-            throw new RuntimeException("AI service did not return a valid response.");
+        if (response == null) {
+            throw new RuntimeException("AI service returned no response.");
+        }
+
+        if (response.containsKey("error")) {
+            throw new RuntimeException(response.get("error"));
+        }
+
+        if (!response.containsKey("reply")) {
+            throw new RuntimeException("AI service returned an invalid response.");
         }
 
         String aiReply = response.get("reply");
 
-        // Save AI message
+        // Save AI response
         Message ai = Message.builder()
                 .session(session)
                 .role("ai")
@@ -97,7 +131,7 @@ public class AiService {
 
         messageRepository.save(ai);
 
-        // Save report if AI returned JSON
+        // Remove markdown if Gemini returns it
         String cleanedReply = aiReply.trim();
 
         if (cleanedReply.startsWith("```json")) {
@@ -114,13 +148,27 @@ public class AiService {
 
         cleanedReply = cleanedReply.trim();
 
+        // Save report when JSON is returned
         if (cleanedReply.startsWith("{")) {
-            Report report = Report.builder()
-                    .session(session)
-                    .reportJson(cleanedReply)
-                    .build();
 
-            reportRepository.save(report);
+            Optional<Report> existingReport =
+                    reportRepository.findBySession(session);
+
+            if (existingReport.isPresent()) {
+
+                Report report = existingReport.get();
+                report.setReportJson(cleanedReply);
+                reportRepository.save(report);
+
+            } else {
+
+                Report report = Report.builder()
+                        .session(session)
+                        .reportJson(cleanedReply)
+                        .build();
+
+                reportRepository.save(report);
+            }
         }
 
         return aiReply;

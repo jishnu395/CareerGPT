@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict
 from dotenv import load_dotenv
@@ -7,36 +7,53 @@ import os
 
 from prompts import SYSTEM_PROMPT
 
-# Load environment variables
+# -----------------------------
+# Load Environment Variables
+# -----------------------------
 load_dotenv()
 
-# Configure Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Gemini model
+if not GEMINI_API_KEY:
+    raise RuntimeError("GEMINI_API_KEY is missing in .env file")
+
+# -----------------------------
+# Configure Gemini
+# -----------------------------
+genai.configure(api_key=GEMINI_API_KEY)
+
 model = genai.GenerativeModel("gemini-2.5-flash")
 
-# FastAPI app
+# -----------------------------
+# FastAPI App
+# -----------------------------
 app = FastAPI(
     title="CareerGPT AI Service",
     version="1.0.0"
 )
 
-
+# -----------------------------
+# Request Model
+# -----------------------------
 class ChatRequest(BaseModel):
     messages: List[Dict[str, str]]
     questionCount: int
 
-
+# -----------------------------
+# Health Check
+# -----------------------------
 @app.get("/")
 def home():
     return {
-        "status": "CareerGPT AI service is running"
+        "status": "CareerGPT AI Service is running"
     }
 
-
+# -----------------------------
+# Chat Endpoint
+# -----------------------------
 @app.post("/chat")
 def chat(request: ChatRequest):
+
     try:
 
         conversation = SYSTEM_PROMPT + "\n\nConversation:\n"
@@ -53,25 +70,41 @@ SYSTEM INSTRUCTION:
 The student has already answered {request.questionCount} questions.
 
 If the student has answered fewer than 10 questions:
-- Ask exactly ONE question.
+- Ask exactly ONE relevant follow-up question.
 - Do NOT generate the report.
+- Ask only one question.
 
 If the student has answered 10 or more questions:
+- Generate the COMPLETE career report.
 - Return ONLY valid JSON.
 - Do NOT ask another question.
-- Do NOT wrap the JSON inside markdown.
-- Do NOT include ```json.
 - Do NOT include explanations.
+- Do NOT wrap the JSON in markdown.
+- Do NOT include ```json.
 """
 
         response = model.generate_content(conversation)
+
+        if response is None or not getattr(response, "text", None):
+            raise HTTPException(
+                status_code=502,
+                detail="Gemini returned an empty response."
+            )
 
         return {
             "reply": response.text
         }
 
+    except HTTPException:
+        raise
+
     except Exception as e:
+
+        print("\n========== GEMINI ERROR ==========")
         print(e)
-        return {
-            "error": str(e)
-        }
+        print("==================================\n")
+
+        raise HTTPException(
+            status_code=503,
+            detail="Gemini API is currently unavailable or quota has been exceeded. Please try again later."
+        )

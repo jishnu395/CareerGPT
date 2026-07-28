@@ -7,30 +7,22 @@ import com.careergpt.backend.model.Student;
 import com.careergpt.backend.repository.MessageRepository;
 import com.careergpt.backend.repository.SessionRepository;
 import com.careergpt.backend.repository.StudentRepository;
-import com.careergpt.backend.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SessionService {
 
-    @Autowired
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
+    private final StudentRepository studentRepository;
+    private final MessageRepository messageRepository;
 
-    @Autowired
-    private StudentRepository studentRepository;
+    public SessionResponse startSession(Long studentId) {
 
-    @Autowired
-    private MessageRepository messageRepository;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    public SessionResponse startSession(String token) {
-        String email = jwtUtil.extractEmail(token);
-        Student student = studentRepository.findByEmail(email)
+        Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
         Session session = Session.builder()

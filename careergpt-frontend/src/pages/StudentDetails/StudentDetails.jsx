@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import PrimaryButton from "../../components/common/PrimaryButton";
-import { register, login } from "../../services/authService";
+import { createStudent } from "../../services/studentService";
 import { startSession } from "../../services/sessionService";
 
 export default function StudentDetails() {
@@ -23,7 +23,6 @@ export default function StudentDetails() {
   const [student, setStudent] = useState({
     name: "",
     email: "",
-    password: "",
     age: "",
     grade: "",
   });
@@ -44,34 +43,30 @@ export default function StudentDetails() {
     });
   };
 
-  const handleSubmit = async () => {
-    try {
-      setLoading(true);
+const handleSubmit = async () => {
+  try {
+    setLoading(true);
 
-      // Register
-      await register(student);
+    const response = await createStudent(student);
 
-      // Login
-      await login({
-        email: student.email,
-        password: student.password,
-      });
+    const studentId = response.data.id;
 
-      // Start Session
-      await startSession();
+    sessionStorage.setItem("studentId", studentId);
 
-      navigate("/assessment");
-    } catch (err) {
-      console.error(err);
+    await startSession(studentId);
 
-      alert(
-        err?.response?.data?.message ||
-          "Something went wrong. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    navigate("/assessment");
+  } catch (err) {
+    console.error(err);
+
+    alert(
+      err?.response?.data?.message ||
+      "Something went wrong. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Box
@@ -127,15 +122,6 @@ export default function StudentDetails() {
             label="Email"
             name="email"
             value={student.email}
-            onChange={handleChange}
-            fullWidth
-          />
-
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            value={student.password}
             onChange={handleChange}
             fullWidth
           />
