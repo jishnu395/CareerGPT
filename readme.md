@@ -478,7 +478,7 @@ Sir M Visvesvaraya Institute of Technology
 
 GitHub: https://github.com/jishnu395
 
-LinkedIn: https://linkedin.com/in/jishnu-v-3119462a4
+LinkedIn: https://linkedin.com/in/v-jishnu
 
 ---
 
