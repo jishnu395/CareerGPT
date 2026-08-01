@@ -38,7 +38,7 @@ public class SecurityConfig {
 
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "https://careergpt-frontend-liux.onrender.com"
+                "https://careergpt-frontend-1iux.onrender.com"
         ));
 
         config.setAllowedMethods(List.of(
