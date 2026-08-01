@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Dict
 from dotenv import load_dotenv
 import google.generativeai as genai
+import traceback
 import os
 
 from prompts import SYSTEM_PROMPT
@@ -14,8 +15,13 @@ load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
+print("=" * 50)
+print("API Key Loaded:", GEMINI_API_KEY is not None)
+print("Key Length:", len(GEMINI_API_KEY) if GEMINI_API_KEY else 0)
+print("=" * 50)
+
 if not GEMINI_API_KEY:
-    raise RuntimeError("GEMINI_API_KEY is missing in .env file")
+    raise RuntimeError("GEMINI_API_KEY is missing.")
 
 # -----------------------------
 # Configure Gemini
@@ -85,7 +91,13 @@ If the student has answered 10 or more questions:
 
         response = model.generate_content(conversation)
 
-        if response is None or not getattr(response, "text", None):
+        if response is None:
+            raise HTTPException(
+                status_code=502,
+                detail="Gemini returned no response."
+            )
+
+        if not getattr(response, "text", None):
             raise HTTPException(
                 status_code=502,
                 detail="Gemini returned an empty response."
@@ -101,10 +113,10 @@ If the student has answered 10 or more questions:
     except Exception as e:
 
         print("\n========== GEMINI ERROR ==========")
-        print(e)
+        traceback.print_exc()
         print("==================================\n")
 
         raise HTTPException(
             status_code=503,
-            detail="Gemini API is currently unavailable or quota has been exceeded. Please try again later."
+            detail=str(e)
         )
