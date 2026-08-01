@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/student")
 @RequiredArgsConstructor
+@CrossOrigin(
+        origins = "https://careergpt-frontend-1iux.onrender.com",
+        allowCredentials = "true"
+)
 public class StudentController {
 
     private final StudentService studentService;
@@ -19,7 +23,6 @@ public class StudentController {
             @PathVariable Long studentId) {
 
         StudentResponse response = studentService.getStudent(studentId);
-
         return ResponseEntity.ok(response);
     }
 
@@ -28,7 +31,6 @@ public class StudentController {
             @RequestBody StudentRequest request) {
 
         StudentResponse response = studentService.createStudent(request);
-
         return ResponseEntity.ok(response);
     }
 }
